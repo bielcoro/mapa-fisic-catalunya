@@ -7,7 +7,6 @@ import { esApres, useEstat } from '../lib/store';
 export function Llista({ anar }: { anar: (m: string) => void }) {
   const estat = useEstat();
   const dubtes = ELEMENTS.filter((e) => e.dubte);
-  const imprimeix = () => window.print();
   return (
     <div className="mode">
       <div className="mode-cap">
@@ -16,9 +15,6 @@ export function Llista({ anar }: { anar: (m: string) => void }) {
           {ELEMENTS.length} noms extrets de la imatge del mapa físic, classificats per tipus. Aquesta és la llista que has de saber.
         </p>
         <div className="fila-botons">
-          <button type="button" className="boto petit" onClick={imprimeix}>
-            🖨️ Imprimeix la llista
-          </button>
           <button type="button" className="boto petit" onClick={() => anar('editor')}>
             🛠️ Corregeix ubicacions
           </button>

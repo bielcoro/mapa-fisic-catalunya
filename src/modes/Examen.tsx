@@ -79,6 +79,7 @@ export function Examen() {
   const [inici, setInici] = useState(0);
   const [durada, setDurada] = useState(0);
   const [vista, setVista] = useState<string | null>(null);
+  const [confirmaAbandona, setConfirmaAbandona] = useState(false);
 
   const candidats = estat.filtre.length ? els.filter((e) => estat.filtre.includes(e.tipus)) : els;
 
@@ -89,6 +90,7 @@ export function Examen() {
     setIdx(0);
     setInici(Date.now());
     setVista(null);
+    setConfirmaAbandona(false);
     setFase('fent');
   };
 
@@ -201,15 +203,21 @@ export function Examen() {
             Pregunta {idx + 1}/{preguntes.length}
           </span>
           <span>{NOM_FORMA[p.forma]}</span>
-          <button
-            type="button"
-            className="boto petit"
-            onClick={() => {
-              if (confirm("Vols abandonar l'examen? No es guardarà el resultat.")) setFase('config');
-            }}
-          >
-            Abandona
-          </button>
+          {confirmaAbandona ? (
+            <span className="confirma-abandona">
+              No es guardarà el resultat.
+              <button type="button" className="boto petit perill" onClick={() => setFase('config')}>
+                Abandona
+              </button>
+              <button type="button" className="boto petit" onClick={() => setConfirmaAbandona(false)}>
+                Continua
+              </button>
+            </span>
+          ) : (
+            <button type="button" className="boto petit" onClick={() => setConfirmaAbandona(true)}>
+              Abandona
+            </button>
+          )}
         </div>
         <BarraProgres valor={idx} max={preguntes.length} etiqueta="Progrés de l'examen" />
       </div>

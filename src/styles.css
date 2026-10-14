@@ -103,13 +103,15 @@ kbd {
 
 .capcalera {
   position: sticky;
-  top: 0;
+  top: env(safe-area-inset-top, 0px);
   z-index: 20;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 10px 16px;
+  padding-block: 10px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
   background: color-mix(in srgb, var(--bg) 88%, transparent);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
@@ -169,7 +171,9 @@ kbd {
   display: flex;
   gap: 6px;
   overflow-x: auto;
-  padding: 10px 16px;
+  padding-block: 10px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
   scrollbar-width: thin;
 }
 .navegacio button {
@@ -196,7 +200,18 @@ kbd {
 
 .contingut {
   flex: 1;
-  padding: 4px 16px 32px;
+  min-width: 0;
+  padding-block: 4px 32px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.confirma-abandona {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  font-size: 0.82rem;
 }
 
 /* ============ Elements comuns ============ */
@@ -1375,7 +1390,7 @@ small {
 
 @media (max-width: 600px) {
   .capcalera {
-    padding: 8px 12px;
+    padding-block: 8px;
   }
   .logo-text {
     display: none;
@@ -1383,11 +1398,8 @@ small {
   .amaga-mobil {
     display: none;
   }
-  .contingut {
-    padding: 4px 12px 32px;
-  }
   .navegacio {
-    padding: 8px 12px;
+    padding-block: 8px;
   }
   .nom-gran {
     font-size: 1.35rem;

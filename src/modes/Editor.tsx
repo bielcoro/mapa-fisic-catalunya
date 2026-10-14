@@ -41,21 +41,12 @@ export function Editor() {
 
   const json = JSON.stringify(estat.ubicacions, null, 2);
 
-  const exporta = () => {
-    const blob = new Blob([json], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'ubicacions-mapa-catalunya.json';
-    a.click();
-    URL.revokeObjectURL(a.href);
-  };
-
   const copia = async () => {
     try {
       await navigator.clipboard.writeText(json);
       setMissatge('Copiat al porta-retalls ✔');
     } catch {
-      setMissatge('No s\'ha pogut copiar. Fes servir «Descarrega».');
+      setMissatge('No s\'ha pogut copiar: selecciona el text de sota i copia\'l a mà.');
     }
   };
 
@@ -156,16 +147,12 @@ export function Editor() {
 
           <details className="caixa">
             <summary>Exporta / importa correccions ({Object.keys(estat.ubicacions).length})</summary>
-            <p className="ajuda">Desa les correccions en un fitxer per fer-ne còpia o passar-les a un altre navegador.</p>
-            <div className="fila-botons">
-              <button type="button" className="boto petit" onClick={exporta} disabled={!Object.keys(estat.ubicacions).length}>
-                ⬇️ Descarrega JSON
-              </button>
-              <button type="button" className="boto petit" onClick={copia} disabled={!Object.keys(estat.ubicacions).length}>
-                📋 Copia
-              </button>
-            </div>
-            <textarea value={importText} onChange={(ev) => setImportText(ev.target.value)} placeholder="Enganxa aquí un JSON exportat..." rows={4} />
+            <p className="ajuda">Copia aquest text per guardar les correccions o passar-les a un altre navegador.</p>
+            <textarea id="json-exporta" readOnly value={json} rows={4} onFocus={(ev) => ev.target.select()} aria-label="Correccions en JSON" />
+            <button type="button" className="boto petit" onClick={copia} disabled={!Object.keys(estat.ubicacions).length}>
+              📋 Copia
+            </button>
+            <textarea id="json-importa" value={importText} onChange={(ev) => setImportText(ev.target.value)} placeholder="Enganxa aquí un JSON exportat..." rows={4} />
             <button type="button" className="boto petit" onClick={importa} disabled={!importText.trim()}>
               ⬆️ Importa
             </button>

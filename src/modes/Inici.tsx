@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { BarraProgres, TipusBadge } from '../components/ui';
 import { ORDRE_TIPUS, TIPUS_INFO } from '../data/types';
 import { esApres, mesDificils, reiniciaProgres, useElements, useEstat } from '../lib/store';
@@ -13,9 +14,7 @@ export function Inici({ anar, segonsSessio }: { anar: (m: string) => void; segon
   const dificils = mesDificils(estat, 6);
   const ultim = MODES.find((m) => m.id === estat.ultimMode);
 
-  const reinicia = () => {
-    if (confirm('Segur que vols esborrar tot el progrés, punts i resultats d\'examen? (Les correccions d\'ubicació es mantenen.)')) reiniciaProgres();
-  };
+  const [confirmaReinici, setConfirmaReinici] = useState(false);
 
   return (
     <div className="inici">
@@ -133,9 +132,28 @@ export function Inici({ anar, segonsSessio }: { anar: (m: string) => void; segon
           <button type="button" className="boto petit" onClick={() => anar('llista')}>
             📋 Llista de noms i dubtes
           </button>
-          <button type="button" className="boto petit perill" onClick={reinicia}>
-            🗑️ Reinicia el progrés
-          </button>
+          {confirmaReinici ? (
+            <>
+              <span className="ajuda">Segur? S'esborraran el progrés, els punts i els exàmens (les correccions d'ubicació es mantenen).</span>
+              <button
+                type="button"
+                className="boto petit perill"
+                onClick={() => {
+                  reiniciaProgres();
+                  setConfirmaReinici(false);
+                }}
+              >
+                Sí, esborra-ho
+              </button>
+              <button type="button" className="boto petit" onClick={() => setConfirmaReinici(false)}>
+                Cancel·la
+              </button>
+            </>
+          ) : (
+            <button type="button" className="boto petit perill" onClick={() => setConfirmaReinici(true)}>
+              🗑️ Reinicia el progrés
+            </button>
+          )}
         </div>
       </section>
     </div>
